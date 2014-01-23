@@ -3,7 +3,8 @@
 /**
  * Thumbnail helper for CakePHP.
  *
- * @author Martin Bean <martin@martinbean.co.uk>, Jamie Hurst <jamie@jamiehurst.co.uk>
+ * @author Martin Bean <martin@martinbean.co.uk>
+ * @author Jamie Hurst <jamie@jamiehurst.co.uk>
  * @version 1.1
  */
 
@@ -22,7 +23,7 @@ class ThumbnailHelper extends AppHelper
     public $config = array(
         'default_background' => array(255, 255, 255),
         'default_height' => 75,
-        'default_image' => 'http://placehold.it/{width}x{height}', // Placeholders for width/height
+        'default_image' => 'http://placehold.it/%1$dx%2$d', // Placeholders for width/height
         'default_width' => 100,
         'jpeg_only' => false,
     );
@@ -71,7 +72,7 @@ class ThumbnailHelper extends AppHelper
         }
 
         // Handle the default image
-        $image = str_replace(array('{width}', '{height}'), array($this->width, $this->height), $this->config['default_image']);
+        $image = sprintf($this->config['default_image'], $this->width, $this->height);
 
         return $this->Html->image($image, $img_options);
     }
@@ -110,7 +111,6 @@ class ThumbnailHelper extends AppHelper
             $source_path .= DS;
         }
 
-        //return $source_path;
         return str_replace(DS . DS, DS, $source_path);
     }
 
