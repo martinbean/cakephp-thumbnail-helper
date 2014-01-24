@@ -134,6 +134,7 @@ class ThumbnailHelper extends AppHelper
             $source_path = $this->source;
         }
         $source_path = $this->prepareSourcePath($source_path);
+        
         $thumbs_path = $this->destination;
         if (empty($thumbs_path)) {
             $thumbs_path = $source_path;
@@ -161,7 +162,6 @@ class ThumbnailHelper extends AppHelper
 
         // Create thumbnail if unavailable
         if (!is_file($thumbs_path . $this->width . 'x' . $this->height . DS . $filename)) {
-
             // Check widths/heights against original (don't create thumbnail if unnecessary)
             if ($width == $this->width && $height == $this->height) {
                 $img_options['src'] = $this->preparePathForUrl($source_path) . DS . $filename;
@@ -191,16 +191,11 @@ class ThumbnailHelper extends AppHelper
 
             // Make the image smaller, taking into account the ratio (option to preserve or use correct ratio)
             if ((isset($options['preserve_ratio']) && !$options['preserve_ratio']) || $ratio == $thumbnail_ratio) {
-
                 imagecopyresampled($canvas, $image, 0, 0, 0, 0, $this->width, $this->height, $width, $height);
-
             } else {
-
                 // Check for larger image
                 if ($this->width > $width || $this->height > $height) {
-
                     imagecopyresampled($canvas, $image, (($this->width) - $width) / 2, (($this->height) - $height) / 2, 0, 0, $width, $height, $width, $height);
-
                 } elseif ($thumbnail_ratio != $ratio) {
                     // Larger ratio means its higher, shorter means its wider
                     if ($thumbnail_ratio < $ratio) {
@@ -219,6 +214,7 @@ class ThumbnailHelper extends AppHelper
             if (!is_dir($thumbs_path . $this->width . 'x' . $this->height)) {
                 mkdir($thumbs_path . $this->width . 'x' . $this->height, 0777, true);
             }
+            
             if (isset($pathinfo['dirname']) && $pathinfo['dirname']) {
                 if (!is_dir($thumbs_path . $this->width . 'x' . $this->height . DS . $pathinfo['dirname'])) {
                     mkdir($thumbs_path . $this->width . 'x' . $this->height . DS . $pathinfo['dirname'], 0777, true);
